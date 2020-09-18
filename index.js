@@ -185,4 +185,4 @@ reddit.getPost('AmongUs', options).then(post => {
   }
 })
 
-client.login(config.token)
+client.login(process.env.TOKEN)
