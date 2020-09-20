@@ -250,6 +250,13 @@ reddit.getPost('AmongUs', options).then(post => {
 
 	message.channel.send(attachment);
    }
+	if(command === "membercount") {
+	message.guild.members.fetch().then(fetchedMembers => {
+	const totalOnline = fetchedMembers.filter(member => member.presence.status === 'online');
+	// We now have a collection with all online member objects in the totalOnline variable
+	<message>.channel.send(`There are currently ${totalOnline.size} members online in this guild!`);
+});
+	}
 })
 
 client.login(process.env.TOKEN)
