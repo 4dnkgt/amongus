@@ -1,7 +1,6 @@
 {
   "name": "amongus",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "dependencies": {
     "@blad3mak3r/reddit-memes": "^0.2.4",
@@ -33,5 +32,14 @@
     "server": "nodemon index.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/4dnkgt/amongus.git"
+  },
+  "bugs": {
+    "url": "https://github.com/4dnkgt/amongus/issues"
+  },
+  "homepage": "https://github.com/4dnkgt/amongus#readme",
+  "description": ""
 }
