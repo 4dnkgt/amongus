@@ -93,7 +93,7 @@ if (command === 'guide') {
     message.channel.send(attachment);
 	}
   else if (args[0] === 'mira') {
-        const attachment = new MessageAttachment('https://i.imgur.com/Q4KKeiC.png');
+        const attachment = new MessageAttachment('https://i.imgur.com/XAyCaa6.png');
     // Send the attachment in the message channel
     message.channel.send(attachment);
 	}
