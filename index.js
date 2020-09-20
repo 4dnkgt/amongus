@@ -187,7 +187,7 @@ reddit.getPost('AmongUs', options).then(post => {
       .addField("6.","am.memes - shows you among us memes!", false)
       .addField("7.","am.trigger - Triggers someone!", false)
       .addField("8.","am.trash - Trash meme command",false)
-      .addField("9.","am.jail - Jail meme command,false)
+      .addField("9.","am.jail - Jail meme command",false)
       .addField("10.","am.level - Shows your level",false)
       .setColor("99caff");
     // Send the embed to the same channel as the message
