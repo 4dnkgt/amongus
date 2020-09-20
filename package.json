@@ -1,6 +1,9 @@
 {
   "name": "amongus",
   "version": "1.0.0",
+    "engines": {
+    "node": "12.18.3"
+  },
   "main": "index.js",
   "dependencies": {
     "@blad3mak3r/reddit-memes": "^0.2.4",
