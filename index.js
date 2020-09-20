@@ -185,7 +185,10 @@ reddit.getPost('AmongUs', options).then(post => {
       .addField("4.","am.wiki - shows you the desired page of the wiki ex: am.wiki impostor")
       .addField("5.","am.character <ex: lime> - Shows you a picture of the desired character", false)
       .addField("6.","am.memes - shows you among us memes!", false)
-      .addField("6.","am.help - shows you this list!", false)
+      .addField("7.","am.trigger - Triggers someone!", false)
+      .addField("8.","am.trash - Trash meme command",false)
+      .addField("9.","am.jail - Jail meme command,false)
+      .addField("10.","am.level - Shows your level",false)
       .setColor("99caff");
     // Send the embed to the same channel as the message
     message.channel.send(embed);
