@@ -2,7 +2,8 @@ const Discord = require("discord.js");
 const Enmap = require("enmap");
 const fs = require("fs");
 const reddit = require('@elchologamer/random-reddit');
-const Jimp = require("jimp");
+const canvacord = require("canvacord");
+const leveling = require('discord-leveling')
 const { Client, MessageEmbed, MessageAttachment } = require('discord.js');
 const client = new Discord.Client
 
@@ -23,7 +24,14 @@ client.on('message', async message => {
 
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
-
+   var profile = await leveling.Fetch(message.author.id)
+  leveling.AddXp(message.author.id, 10)
+  //If user xp higher than 100 add level
+  if (profile.xp + 10 > 100) {
+    await leveling.AddLevel(message.author.id, 1)
+    await leveling.SetXp(message.author.id, 0)
+    message.reply(`Congraluations you now are level ${profile.level + 1}`)
+  } 
   if (command === 'wiki') {
     let text = args.join(" ");
     message.channel.send('https://among-us-wiki.fandom.com/wiki/' + text);
@@ -181,6 +189,63 @@ reddit.getPost('AmongUs', options).then(post => {
     // Send the embed to the same channel as the message
     message.channel.send(embed);
   }
+	
+	
+     if (command === "trigger") {
+        var user = message.mentions.users.first() || message.author
+        let avatar = user.displayAvatarURL({ dynamic: false, format: 'png' });
+        let image = await canvacord.trigger(avatar);
+        let attachment = new Discord.MessageAttachment(image, "triggered.gif");
+        return message.channel.send(attachment);
+  }
+
+  if(command === "jail") {
+        var user = message.mentions.users.first() || message.author
+        let avatar = user.displayAvatarURL({ dynamic: false, format: 'png' });
+        let image = await canvacord.jail(avatar);
+        let attachment = new Discord.MessageAttachment(image, "bruh.png");
+        return message.channel.send(attachment);
+    }
+
+
+  if(command === "trash") {
+        var user = message.mentions.users.first() || message.author
+        let avatar = user.displayAvatarURL({ dynamic: false, format: 'png' });
+        let image = await canvacord.trash(avatar);
+        let attachment = new Discord.MessageAttachment(image, "bruh.png");
+        return message.channel.send(attachment);
+    }
+  if(command === "level") {
+        var user = message.mentions.users.first() || message.author
+
+        var output = await leveling.Fetch(user.id)
+    	const canvas = Canvas.createCanvas(700, 250);
+	const ctx = canvas.getContext('2d');
+
+	const background = await Canvas.loadImage('./wallpaper.jpg');
+	ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+	// Slightly smaller text placed above the member's display name
+	ctx.font = '28px Century-Gothic-Bold';
+	ctx.fillStyle = '#ffffff';
+	ctx.fillText(`${user.tag} has`, canvas.width / 2.5, canvas.height / 3.5);
+
+	
+	ctx.fillStyle = '#ffffff';
+	ctx.fillText(`${output.level} level(s)`, canvas.width / 2.5, canvas.height / 1.8);
+
+	ctx.beginPath();
+	ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
+	ctx.closePath();
+	ctx.clip();
+
+	const avatar = await Canvas.loadImage(user.displayAvatarURL({ format: 'png' }));
+	ctx.drawImage(avatar, 25, 25, 200, 200);
+
+	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'testing.png');
+
+	message.channel.send(attachment);
+   }
 })
 
 client.login(process.env.TOKEN)
