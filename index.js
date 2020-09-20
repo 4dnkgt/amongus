@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const Enmap = require("enmap");
+const Canvas = require('canvas');
 const fs = require("fs");
 const reddit = require('@elchologamer/random-reddit');
 const canvacord = require("canvacord");
