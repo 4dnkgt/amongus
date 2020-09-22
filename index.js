@@ -12,9 +12,6 @@ let ai = new alexa("aw2plm")//access key free :)
 const { Client, MessageEmbed, MessageAttachment } = require('discord.js');
 const client = new Discord.Client()
 
-const mongoCurrency = require('discord-mongo-currency');
- 
-mongoCurrency.connect('mongodb://localhost:27017');
 
 
 const usedCommandRecently = new Set();
@@ -203,9 +200,6 @@ reddit.getPost('AmongUs', options).then(post => {
       .addField("11.","am.chat - Talk with an AI Its learns.",false)
       .addField("12.","am.amongify - Amongify your profile picture",false)
       .addField("13.","am.changemymind - Change my mind meme.",false)
-      .addField("14.","am.work - Work command(currency).",false)
-      .addField("15.","am.beg - Beg command(currency).",false)
-      .addField("16.","am.bal - balance command(currency).",false)
       .setColor("99caff");
     // Send the embed to the same channel as the message
     message.author.send(embed);
@@ -307,57 +301,7 @@ reddit.getPost('AmongUs', options).then(post => {
   let img = await canvacord.changemymind(text);
   let attachment = new Discord.MessageAttachment(img, "bruher.png");
   message.channel.send(attachment)
-}  
- if(command === "bal") {
-    const member = message.mentions.members.first() || message.member;
- 
-    const user = await mongoCurrency.findUser(member.id, message.guild.id); // Get the user from the database.
- 
-    const embed = new MessageEmbed()
-    .setTitle(`${member.user.username}'s Balance`)
-    .setDescription(`Wallet: ${user.coinsInWallet}`)
-    
-    message.channel.send(embed);
-}
-
- if(command === "beg") {
-    if(usedCommandRecently.has(message.author.id)){
-    message.channel.send("You are tired, try using this command in 5 minutes!")
-    
-   } else{
-    const randomCoins = Math.floor(Math.random() * 99) + 1; // Random amount of coins.
-    
-    await mongoCurrency.giveCoins(message.member.id, message.guild.id, randomCoins);
-    
-    message.channel.send(`A kind stranger donated you ${randomCoins} AU Bucks`)
-    
-   usedCommandRecently.add(message.author.id);
- setTimeout(() => {
-  // Removes the user from the set after 2.5 seconds
-  usedCommandRecently.delete(message.author.id);
-   }, 300000);
- }
-}
-
-if (command === "work") {
-      if(usedCommandRecently.has(message.author.id)){
-    message.channel.send("You are tired, try using this command in 1 hour!")
-    
-   }else {
-
-    const randomCoins = Math.floor(Math.random() * 499) + 1; // Random amount of coins.
-    
-    await mongoCurrency.giveCoins(message.member.id, message.guild.id, randomCoins);
-
-    message.channel.send(`You worked and earned ${randomCoins} AU Bucks`)
-   
-   usedCommandRecently.add(message.author.id);
- setTimeout(() => {
-  // Removes the user from the set after 2.5 seconds
-  usedCommandRecently.delete(message.author.id);
-   }, 3600000);
- }
-}	
+}  	
 })
 
 client.login(process.env.TOKEN)
