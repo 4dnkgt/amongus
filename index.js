@@ -208,7 +208,8 @@ reddit.getPost('AmongUs', options).then(post => {
       .addField("16.","am.bal - balance command(currency).",false)
       .setColor("99caff");
     // Send the embed to the same channel as the message
-    message.channel.send(embed);
+    message.author.send(embed);
+    message.channel.send("Check your dms!")
   }
 	
 	
