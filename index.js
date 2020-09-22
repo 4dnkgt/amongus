@@ -202,8 +202,7 @@ reddit.getPost('AmongUs', options).then(post => {
       .addField("13.","am.changemymind - Change my mind meme.",false)
       .setColor("99caff");
     // Send the embed to the same channel as the message
-    message.author.send(embed);
-    message.channel.send("Check your dms!")
+    message.channel.send(embed)
   }
 	
 	
