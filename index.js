@@ -189,6 +189,9 @@ reddit.getPost('AmongUs', options).then(post => {
       .addField("8.","am.trash - Trash meme command",false)
       .addField("9.","am.jail - Jail meme command",false)
       .addField("10.","am.level - Shows your level",false)
+      .addField("11.","am.chat - Talk with an AI Its learns.",false)
+      .addField("12.","am.amongify - Amongify your profile picture",false)
+      .addField("11.","am.changemymind - Change my mind meme.",false)
       .setColor("99caff");
     // Send the embed to the same channel as the message
     message.channel.send(embed);
@@ -257,6 +260,39 @@ reddit.getPost('AmongUs', options).then(post => {
 	message.channel.send(`There are currently ${totalOnline.size} members online in this guild!`);
 });
 	}
+     }
+	 if(command === "amongify") {
+     message.channel.send("``This will most likely not work on transparent avatars``")
+     var user = message.mentions.users.first() || message.author
+
+    const canvas = Canvas.createCanvas(700, 250);
+    const ctx = canvas.getContext('2d');
+
+    const background = await Canvas.loadImage('./wallpaper.jpg');
+    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+    const cyan = await Canvas.loadImage('./cyan.png')
+    ctx.drawImage(cyan, 0, 0, canvas.width, canvas.height);
+
+    const avatar = await Canvas.loadImage(user.displayAvatarURL({ format: 'png' }));
+    ctx.drawImage(avatar, 300, 25, 200, 200);
+
+    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'testing.png');
+
+    message.channel.send(attachment);
+  }
+
+ if(command === "chat") {
+  let text = args.join(" ");
+  ai.getReply(text).then(reply => message.channel.send(reply))
+ }
+
+ if(command === "changemymind") {
+  let text = args.join(" ");
+  let img = await canvacord.changemymind(text);
+  let attachment = new Discord.MessageAttachment(img, "bruher.png");
+  message.channel.send(attachment)
+}  
 })
 
 client.login(process.env.TOKEN)
