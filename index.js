@@ -264,7 +264,7 @@ reddit.getPost('AmongUs', options).then(post => {
 	message.channel.send(`There are currently ${totalOnline.size} members online in this guild!`);
 });
 	}
-     }
+	
 	 if(command === "amongify") {
      message.channel.send("``This will most likely not work on transparent avatars``")
      var user = message.mentions.users.first() || message.author
