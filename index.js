@@ -3,10 +3,14 @@ const Enmap = require("enmap");
 const Canvas = require('canvas');
 const fs = require("fs");
 const reddit = require('@elchologamer/random-reddit');
+const { Menu } = require('discord.js-menu');
 const canvacord = require("canvacord");
+const nodeCMD = require("node-cmd");
 const leveling = require('discord-leveling')
+let alexa = require('alexa-bot-api');
+let ai = new alexa("aw2plm")//access key free :)
 const { Client, MessageEmbed, MessageAttachment } = require('discord.js');
-const client = new Discord.Client
+const client = new Discord.Client()
 
 const config = require("./config.json");
 
