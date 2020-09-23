@@ -300,7 +300,20 @@ reddit.getPost('AmongUs', options).then(post => {
   let img = await canvacord.changemymind(text);
   let attachment = new Discord.MessageAttachment(img, "bruher.png");
   message.channel.send(attachment)
-}  	
+}  
+  if(command === "pvp"){
+  if(message.guild.id === "758330675689947147"){
+    const vo2 = args[0]
+    var string = `You won!
+    You lost!`
+    var words = string.split('\n');
+    let random = words[Math.floor(Math.random()*words.length)];
+    m = await message.channel.send("PVP!")
+    await m.edit(`You choose ${vo2} to fight.`)
+    
+    await m.edit(`${random}`)
+  }
+}
 })
 
 client.login(process.env.TOKEN)
