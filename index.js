@@ -15,6 +15,7 @@ const client = new Discord.Client()
 
 
 const usedCommandRecently = new Set();
+const cooldown = new Set();
 
 const config = require("./config.json");
 
