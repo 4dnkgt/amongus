@@ -342,7 +342,6 @@ reddit.getPost('AmongUs', options).then(post => {
           allow: ['CONNECT', 'SPEAK', 'MUTE_MEMBERS'],
         },
       ]
-    }
 })
     client.channelCollection.set(message.author.id);
     cooldown.add(message.author.id);
