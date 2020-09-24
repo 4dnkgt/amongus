@@ -186,8 +186,7 @@ reddit.getPost('AmongUs', options).then(post => {
 
   }
   if (command === 'help') {
- message.channel.send('``TIP: Become a patreon for a custom command https://www.patreon.com/RaylenBots?fan_landing=true ;)``')
- const embed = new MessageEmbed()
+      const embed = new MessageEmbed()
       .setTitle("Help - Commands!")
       .addField("1.", "am.guide <ex: impostor> - Teaches you how to play the game")
       .addField("2.","am.ping - pong!")
@@ -207,6 +206,7 @@ reddit.getPost('AmongUs', options).then(post => {
       .setColor("99caff");
     // Send the embed to the same channel as the message
     message.channel.send(embed)
+    message.channel.send('``TIP: Become a patreon for a custom command https://www.patreon.com/RaylenBots?fan_landing=true ;)``')
   }
 	
 	
