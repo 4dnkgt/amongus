@@ -331,7 +331,7 @@ reddit.getPost('AmongUs', options).then(post => {
     const embed = new Discord.MessageEmbed()
     .setDescription(message.author.username+ ", you have already created an Among Us Party.")
     .setColor("RANDOM");
-    const channel = await message.guild.channels.create(`Among Us Party 1`, { type: 'voice',
+    const channel = await message.guild.channels.create(`Among Us Party`, { type: 'voice',
       permissionOverwrites: [
         {
           id: message.guild.id,
@@ -343,29 +343,6 @@ reddit.getPost('AmongUs', options).then(post => {
         },
       ]
     })
-    if(message.guild.channels.cache.find(a => a.name === `Among Us Party 1`)) message.guild.channels.create(`Among Us Party 2`, { type: 'voice',
-    permissionOverwrites: [
-      {
-        id: message.guild.id,
-        deny: ['CONNECT', 'SPEAK'],
-      },
-      {
-        id: message.author.id,
-        allow: ['CONNECT', 'SPEAK', 'MUTE_MEMBERS'],
-      },
-    ]
-  })
-  if(message.guild.channels.cache.find(a => a.name === `Among Us Party 2`)) message.guild.channels.create(`Among Us Party 3`, { type: 'voice',
-  permissionOverwrites: [
-    {
-      id: message.guild.id,
-      deny: ['CONNECT', 'SPEAK'],
-    },
-    {
-      id: message.author.id,
-      allow: ['CONNECT', 'SPEAK', 'MUTE_MEMBERS'],
-    },
-  ]
 })
     client.channelCollection.set(message.author.id);
     cooldown.add(message.author.id);
@@ -375,8 +352,7 @@ reddit.getPost('AmongUs', options).then(post => {
     const embed2 = new Discord.MessageEmbed()
     .setDescription("Your Among Us Party has been created!")
     .setColor("RANDOM")
-    message.channel.send(embed2)
-    message.author.send(`${math} Is your code give it to yours friends so they can join your party.`)
+    message.channel.send(embed2);
   }
 
   if (command === "invite") {
