@@ -186,6 +186,7 @@ reddit.getPost('AmongUs', options).then(post => {
 
   }
   if (command === 'help') {
+ message.channel.send('``TIP: Become a patreon for a custom command https://www.patreon.com/RaylenBots?fan_landing=true ;)``')
  const embed = new MessageEmbed()
       .setTitle("Help - Commands!")
       .addField("1.", "am.guide <ex: impostor> - Teaches you how to play the game")
