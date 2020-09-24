@@ -200,6 +200,8 @@ reddit.getPost('AmongUs', options).then(post => {
       .addField("11.","am.chat - Talk with an AI Its learns.",false)
       .addField("12.","am.amongify - Amongify your profile picture",false)
       .addField("13.","am.changemymind - Change my mind meme.",false)
+      .addField("14.","am.createparty - Makes a party for you and your friends",false)
+      .addField("15.","am.invite - Invite people to join/connect to your voice chat party",false)
       .setColor("99caff");
     // Send the embed to the same channel as the message
     message.channel.send(embed)
@@ -314,6 +316,78 @@ reddit.getPost('AmongUs', options).then(post => {
     await m.edit(`${random}`)
   }
 }
+	
+  if (command === "createparty") {
+    if(cooldown.has(message.author.id)){
+      const embed1 = new Discord.MessageEmbed()
+      .setDescription(message.author.username+ ", you only have permission to use this command again in 24 hours")
+      .setColor("RANDOM")
+      message.channel.send(embed1);
+      return;
+   }
+    client.channelCollection = new Discord.Collection();
+    message.delete()
+    const embed = new Discord.MessageEmbed()
+    .setDescription(message.author.username+ ", you have already created an Among Us Party.")
+    .setColor("RANDOM");
+    const channel = await message.guild.channels.create(`Among Us Party 1`, { type: 'voice',
+      permissionOverwrites: [
+        {
+          id: message.guild.id,
+          deny: ['CONNECT', 'SPEAK'],
+        },
+        {
+          id: message.author.id,
+          allow: ['CONNECT', 'SPEAK', 'MUTE_MEMBERS'],
+        },
+      ]
+    })
+    if(message.guild.channels.cache.find(a => a.name === `Among Us Party 1`)) message.guild.channels.create(`Among Us Party 2`, { type: 'voice',
+    permissionOverwrites: [
+      {
+        id: message.guild.id,
+        deny: ['CONNECT', 'SPEAK'],
+      },
+      {
+        id: message.author.id,
+        allow: ['CONNECT', 'SPEAK', 'MUTE_MEMBERS'],
+      },
+    ]
+  })
+  if(message.guild.channels.cache.find(a => a.name === `Among Us Party 2`)) message.guild.channels.create(`Among Us Party 3`, { type: 'voice',
+  permissionOverwrites: [
+    {
+      id: message.guild.id,
+      deny: ['CONNECT', 'SPEAK'],
+    },
+    {
+      id: message.author.id,
+      allow: ['CONNECT', 'SPEAK', 'MUTE_MEMBERS'],
+    },
+  ]
+})
+    client.channelCollection.set(message.author.id);
+    cooldown.add(message.author.id);
+    setTimeout(() => {
+      cooldown.delete(message.author.id);
+    }, 86400000);
+    const embed2 = new Discord.MessageEmbed()
+    .setDescription("Your Among Us Party has been created!")
+    .setColor("RANDOM")
+    message.channel.send(embed2)
+    message.author.send(`${math} Is your code give it to yours friends so they can join your party.`)
+  }
+
+  if (command === "invite") {
+    const user1 = message.mentions.members.first();
+
+    const channel = message.member.voice.channel
+    channel.updateOverwrite(user1, {
+     CONNECT:  true,
+     SPEAK: true
+    })
+    message.channel.send("Done Invited user :)")
+  }
 })
 
 client.login(process.env.TOKEN)
