@@ -221,7 +221,6 @@ else if (args[0] === 'yellow') {
     message.channel.send(embed);
 }
 
-  }
   if (command === 'help') {
       const embed = new MessageEmbed()
       .setTitle("Help - Commands!")
