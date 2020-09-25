@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const Enmap = require("enmap");
 const Canvas = require('canvas');
 const fs = require("fs");
-const reddit = require('@elchologamer/random-reddit');
+const lib = require("reddit-package")
 const { Menu } = require('discord.js-menu');
 const canvacord = require("canvacord");
 const db = require('quick.db');
@@ -210,11 +210,11 @@ else if (args[0] === 'yellow') {
 
   if (command === 'memes') {
   message.channel.send("```Please, wait some memes take a while to load.```")
-reddit.getPost('AmongUs', options).then(post => {
-    console.log(`Received post: ${post.images}`);
- const embed = new MessageEmbed()
-      .setTitle(`${post.title}`)
-      .setImage(`${post.image}`)
+   let data = lib.reddit('meme')
+
+     const embed = new MessageEmbed()
+      .setTitle(`${data.title}`)
+      .setImage(`${data.img}`)
       .setColor("99caff")
       .setFooter("powered by me duh.")
     // Send the embed to the same channel as the message
