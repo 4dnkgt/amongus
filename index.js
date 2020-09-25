@@ -210,7 +210,7 @@ else if (args[0] === 'yellow') {
 
   if (command === 'memes') {
   message.channel.send("```Please, wait some memes take a while to load.```")
-   let data = lib.reddit('meme')
+   let data = lib.reddit('AmongUs')
 
      const embed = new MessageEmbed()
       .setTitle(`${data.title}`)
