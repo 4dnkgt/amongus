@@ -47,8 +47,11 @@ client.on("guildMemberAdd", (member) => { //usage of welcome event
 
 client.on('message', async message => {
   if(message.author.bot) return; 
+	
+  let prefix = db.get(`prefix_${message.guild.id}`)
+  if(prefix === null) prefix = default_prefix;
 
-  const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+  const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
    var profile = await leveling.Fetch(message.author.id)
   leveling.AddXp(message.author.id, 10)
