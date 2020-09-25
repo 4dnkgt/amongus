@@ -419,6 +419,10 @@ reddit.getPost('AmongUs', options).then(post => {
     message.channel.send(embed1);
   }
  if(command === "setwelcome") {
+     if(!message.member.hasPermission("ADMINISTRATOR")) {
+     return message.channel.send('You dont have permission to execute this command.')
+   }
+	 
   let channel = message.mentions.channels.first() //mentioned channel
     
   if(!channel) { //if channel is not mentioned
