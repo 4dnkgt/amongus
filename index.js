@@ -48,6 +48,8 @@ client.on("guildMemberAdd", (member) => { //usage of welcome event
 
 client.on('message', async message => {
   if(message.author.bot) return; 
+  if (message.channel.type == "dm") return;	
+	
 	
   let prefix = db.get(`prefix_${message.guild.id}`)
   if(prefix === null) prefix = default_prefix;
