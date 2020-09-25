@@ -458,6 +458,38 @@ else if (args[0] === 'yellow') {
      return message.channel.send("This command Is patreon only.")
    }
  }
+	
+ if(command === "level") {
+         var user = message.mentions.users.first() || message.author
+
+        var output = await leveling.Fetch(user.id)
+    	const canvas = Canvas.createCanvas(700, 250);
+	const ctx = canvas.getContext('2d');
+
+	const background = await Canvas.loadImage('./wallpaper.jpg');
+	ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+	// Slightly smaller text placed above the member's display name
+	ctx.font = '28px Century-Gothic-Bold';
+	ctx.fillStyle = '#ffffff';
+	ctx.fillText(`${user.tag} has`, canvas.width / 2.5, canvas.height / 3.5);
+
+	
+	ctx.fillStyle = '#ffffff';
+	ctx.fillText(`${output.level} level(s)`, canvas.width / 2.5, canvas.height / 1.8);
+
+	ctx.beginPath();
+	ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
+	ctx.closePath();
+	ctx.clip();
+
+	const avatar = await Canvas.loadImage(user.displayAvatarURL({ format: 'png' }));
+	ctx.drawImage(avatar, 25, 25, 200, 200);
+
+	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'testing.png');
+
+	message.channel.send(attachment);
+ }
 })
 
 client.login(process.env.TOKEN)
