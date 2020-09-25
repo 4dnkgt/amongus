@@ -219,8 +219,6 @@ else if (args[0] === 'yellow') {
       .setFooter("powered by me duh.")
     // Send the embed to the same channel as the message
     message.channel.send(embed);
-}).catch(err => {
-    console.log(err);
 });
 
   }
