@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const Enmap = require("enmap");
 const Canvas = require('canvas');
 const fs = require("fs");
-const lib = require("reddit-package")
+const reddit = require('@elchologamer/random-reddit');
 const { Menu } = require('discord.js-menu');
 const canvacord = require("canvacord");
 const db = require('quick.db');
@@ -13,7 +13,8 @@ let ai = new alexa("aw2plm")//access key free :)
 const { Client, MessageEmbed, MessageAttachment } = require('discord.js');
 const client = new Discord.Client()
 
-const { default_prefix } = require('./config.json')
+
+const { default_prefix } = require('./config.json');
 
 const usedCommandRecently = new Set();
 const cooldown = new Set();
@@ -28,37 +29,39 @@ let options = {
 client.on('ready', () => {
  console.log('i am ready!')
  client.user.setActivity('am.help!');
-});
+  });
 
-client.on("guildMemberAdd", (member) => { //usage of welcome event
+  client.on("guildMemberAdd", (member) => { //usage of welcome event
     let chx = db.get(`welchannel_${member.guild.id}`); //defining var
     
     if(chx === null) { //check if var have value or not
       return;
     }
-        
-    let wembed = new Discord.MessageEmbed() //define embedgetRandomMeme("memes").then(console.info).catch(console.error);
+  
 
+      
+    let wembed = new Discord.MessageEmbed() //define embed
     .setAuthor(member.user.username, member.user.avatarURL())
     .setColor("#ff2050")
     .setDescription(`Welcome to ${member.guild}`);
     
     client.channels.cache.get(chx).send(wembed)
-})
 
+})
 
 client.on('message', async message => {
   if(message.author.bot) return; 
-  if (message.channel.type == "dm") return;	
-	
-	
+  if (message.channel.type == "dm") return;
+  
   let prefix = db.get(`prefix_${message.guild.id}`)
   if(prefix === null) prefix = default_prefix;
 
+  let disabled = db.get(`logging_${message.guild.id}`); //defining var
+
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
-  let disabled = db.get(`logging_${message.guild.id}`); //defining var
-if(disabled === null) { //check if var have value or not
+
+  if(disabled === null) { //check if var have value or not
     var profile = await leveling.Fetch(message.author.id)
     leveling.AddXp(message.author.id, 10)
     //If user xp higher than 100 add level
@@ -80,7 +83,7 @@ if(disabled === null) { //check if var have value or not
   }
   if (command === 'wiki') {
     let text = args.join(" ");
-    message.channel.send('https://among-us-wiki.fandom.com/wiki/' + text);
+    message.channel.send('hello')
   }
 
 if (command === 'guide') {
@@ -207,11 +210,11 @@ else if (args[0] === 'yellow') {
 
   if (command === 'memes') {
   message.channel.send("```Please, wait some memes take a while to load.```")
-  let data = lib.reddit('AmongUs')
- 
+reddit.getPost('AmongUs', options).then(post => {
+    console.log(`Received post: ${post.images}`);
  const embed = new MessageEmbed()
-      .setTitle(`${data.title}`)
-      .setImage(`${data.img}`)
+      .setTitle(`${post.title}`)
+      .setImage(`${post.image}`)
       .setColor("99caff")
       .setFooter("powered by me duh.")
     // Send the embed to the same channel as the message
@@ -239,9 +242,7 @@ else if (args[0] === 'yellow') {
       .addField("13.","am.changemymind - Change my mind meme.",false)
       .addField("14.","am.createparty - Makes a party for you and your friends",false)
       .addField("15.","am.invite - Invite people to join/connect to your voice chat party",false)
-      .addField("16.","am.setprefix - change the prefix for your server!",false)
-      .addField("17.","am.setwelcome - select the welcome channel",false)
-      .addField("18.","am.config - shows your config",false)
+      .addField("16.","am.setlevelingchannel - Sets the leveling channel patreon only",false)
       .setColor("99caff");
     // Send the embed to the same channel as the message
     message.channel.send(embed)
@@ -273,37 +274,7 @@ else if (args[0] === 'yellow') {
         let attachment = new Discord.MessageAttachment(image, "bruh.png");
         return message.channel.send(attachment);
     }
-  if(command === "level") {
-        var user = message.mentions.users.first() || message.author
 
-        var output = await leveling.Fetch(user.id)
-    	const canvas = Canvas.createCanvas(700, 250);
-	const ctx = canvas.getContext('2d');
-
-	const background = await Canvas.loadImage('./wallpaper.jpg');
-	ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-
-	// Slightly smaller text placed above the member's display name
-	ctx.font = '28px Century-Gothic-Bold';
-	ctx.fillStyle = '#ffffff';
-	ctx.fillText(`${user.tag} has`, canvas.width / 2.5, canvas.height / 3.5);
-
-	
-	ctx.fillStyle = '#ffffff';
-	ctx.fillText(`${output.level} level(s)`, canvas.width / 2.5, canvas.height / 1.8);
-
-	ctx.beginPath();
-	ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
-	ctx.closePath();
-	ctx.clip();
-
-	const avatar = await Canvas.loadImage(user.displayAvatarURL({ format: 'png' }));
-	ctx.drawImage(avatar, 25, 25, 200, 200);
-
-	const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'testing.png');
-
-	message.channel.send(attachment);
-   }
 	if(command === "membercount") {
 	message.guild.members.fetch().then(fetchedMembers => {
 	const totalOnline = fetchedMembers.filter(member => member.presence.status === 'online');
@@ -404,8 +375,29 @@ else if (args[0] === 'yellow') {
     })
     message.channel.send("Done Invited user :)")
   }
-  
-    if(command === "setprefix") {
+
+  if(command === "dead") {
+    const user1 = message.mentions.members.first();
+
+    const channel = message.member.voice.channel
+    channel.updateOverwrite(user1, {
+     CONNECT:  true,
+     SPEAK: false
+    })
+    message.channel.send('User has been marked as dead.')
+  }
+
+  if(command === "alive") {
+    const user1 = message.mentions.members.first();
+
+    const channel = message.member.voice.channel
+    channel.updateOverwrite(user1, {
+     CONNECT:  true,
+     SPEAK: true
+    })
+  }
+
+  if(command === "setprefix") {
    if(!message.member.hasPermission("ADMINISTRATOR")) {
      return message.channel.send('You dont have permission to execute this command.')
    }
@@ -437,15 +429,11 @@ else if (args[0] === 'yellow') {
     const embed1 = new Discord.MessageEmbed()
     .setColor("4eed6b")
     .addField("``prefix``", `${prefix}`, true)
-    .addField("``Welcome channel``", `welchannel_${message.guild.id}`,)
-    .addField("``Leveling Channel``", `${thank}`)
+    .addField("``Welcome channel``", `welchannel_${message.guild.id}`)
+    .addField("``setlevelingchannel``", `${thank}`)
     message.channel.send(embed1);
   }
  if(command === "setwelcome") {
-     if(!message.member.hasPermission("ADMINISTRATOR")) {
-     return message.channel.send('You dont have permission to execute this command.')
-   }
-	 
   let channel = message.mentions.channels.first() //mentioned channel
     
   if(!channel) { //if channel is not mentioned
@@ -458,8 +446,8 @@ else if (args[0] === 'yellow') {
   
   message.channel.send(`Welcome Channel is seted as ${channel}`) //send success message
  }
-	
-  if(command === "setlevelingchannel") {
+
+ if(command === "setlevelingchannel") {
    if(message.author.id === "1"){
     let channel = message.mentions.channels.first()
 
