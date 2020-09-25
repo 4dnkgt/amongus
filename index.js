@@ -29,6 +29,22 @@ client.on('ready', () => {
  client.user.setActivity('am.help!');
 });
 
+client.on("guildMemberAdd", (member) => { //usage of welcome event
+    let chx = db.get(`welchannel_${member.guild.id}`); //defining var
+    
+    if(chx === null) { //check if var have value or not
+      return;
+    }
+        
+    let wembed = new Discord.MessageEmbed() //define embed
+    .setAuthor(member.user.username, member.user.avatarURL())
+    .setColor("#ff2050")
+    .setDescription(`Welcome to ${member.guild}`);
+    
+    client.channels.cache.get(chx).send(wembed)
+})
+
+
 client.on('message', async message => {
   if(message.author.bot) return; 
 
@@ -203,6 +219,9 @@ reddit.getPost('AmongUs', options).then(post => {
       .addField("13.","am.changemymind - Change my mind meme.",false)
       .addField("14.","am.createparty - Makes a party for you and your friends",false)
       .addField("15.","am.invite - Invite people to join/connect to your voice chat party",false)
+      .addField("16.","am.setprefix - change the prefix for your server!",false)
+      .addField("17.","am.setwelcome - select the welcome channel",false)
+      .addField("18.","am.config - shows your config",false)
       .setColor("99caff");
     // Send the embed to the same channel as the message
     message.channel.send(embed)
@@ -365,6 +384,53 @@ reddit.getPost('AmongUs', options).then(post => {
     })
     message.channel.send("Done Invited user :)")
   }
+  
+    if(command === "setprefix") {
+   if(!message.member.hasPermission("ADMINISTRATOR")) {
+     return message.channel.send('You dont have permission to execute this command.')
+   }
+
+   if(!args[0]) {
+     return message.channel.send('I cannot set the prefix to the value NULL as that is impossible.')
+   }
+
+   if(args[1]) {
+    return message.channel.send("How are you planning on adding 2 prefixes?")
+   }
+
+   if(args[0].length > 3) {
+     return message.channel.send('Humans have evolved alot so now they can set three prefixes???')
+   }
+
+   if(args.join("") === default_prefix) {
+     db.delete(`prefix_${message.guild.id}`)
+     await message.channel.send('Set your prefix to default')
+   }
+
+   db.set(`prefix_${message.guild.id}`, args[0])
+   await message.channel.send(`Set prefix to ${args[0]}`)
+
+  }
+  if(command === "config") {
+    const embed1 = new Discord.MessageEmbed()
+    .setColor("4eed6b")
+    .addField("``prefix``", `${prefix}`, true)
+    .addField("``Welcome channel``", `welchannel_${message.guild.id}`,)
+    message.channel.send(embed1);
+  }
+ if(command === "setwelcome") {
+  let channel = message.mentions.channels.first() //mentioned channel
+    
+  if(!channel) { //if channel is not mentioned
+    return message.channel.send("Please Mention the channel first")
+  }
+  
+  //Now we gonna use quick.db
+  
+  db.set(`welchannel_${message.guild.id}`, channel.id) //set id in var
+  
+  message.channel.send(`Welcome Channel is seted as ${channel}`) //send success message
+ }
 })
 
 client.login(process.env.TOKEN)
