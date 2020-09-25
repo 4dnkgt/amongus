@@ -56,14 +56,27 @@ client.on('message', async message => {
 
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
-   var profile = await leveling.Fetch(message.author.id)
+  let disabled = db.get(`logging_${message.guild.id}`); //defining var
+if(disabled === null) { //check if var have value or not
+    var profile = await leveling.Fetch(message.author.id)
+    leveling.AddXp(message.author.id, 10)
+    //If user xp higher than 100 add level
+    if (profile.xp + 10 > 10) {
+      await leveling.AddLevel(message.author.id, 1)
+      await leveling.SetXp(message.author.id, 0)
+      message.reply(`Congraluations you now are level ${profile.level + 1}`)
+    } 
+  }
+
+  var user = message.author
+  var profile = await leveling.Fetch(message.author.id)
   leveling.AddXp(message.author.id, 10)
   //If user xp higher than 100 add level
-  if (profile.xp + 10 > 100) {
+  if (profile.xp + 10 > 10) {
     await leveling.AddLevel(message.author.id, 1)
     await leveling.SetXp(message.author.id, 0)
-    message.reply(`Congraluations you now are level ${profile.level + 1}`)
-  } 
+    client.channels.cache.get(disabled).send(`${user} Congraluations you now are level ${profile.level + 1}`)
+  }
   if (command === 'wiki') {
     let text = args.join(" ");
     message.channel.send('https://among-us-wiki.fandom.com/wiki/' + text);
@@ -418,10 +431,13 @@ reddit.getPost('AmongUs', options).then(post => {
 
   }
   if(command === "config") {
+    const dbo = db.get(`logging_${message.guild.id}`)
+    const thank = client.channels.cache.get(dbo)
     const embed1 = new Discord.MessageEmbed()
     .setColor("4eed6b")
     .addField("``prefix``", `${prefix}`, true)
     .addField("``Welcome channel``", `welchannel_${message.guild.id}`,)
+    .addField("``Leveling Channel``", `${thank}`)
     message.channel.send(embed1);
   }
  if(command === "setwelcome") {
@@ -440,6 +456,21 @@ reddit.getPost('AmongUs', options).then(post => {
   db.set(`welchannel_${message.guild.id}`, channel.id) //set id in var
   
   message.channel.send(`Welcome Channel is seted as ${channel}`) //send success message
+ }
+	
+  if(command === "setlevelingchannel") {
+   if(message.author.id === "1"){
+    let channel = message.mentions.channels.first()
+
+  if(!channel) {
+    return message.channel.send("Mention a channel bruh..")
+  }
+
+  db.set(`logging_${message.guild.id}`, channel.id)
+  message.channel.send(`Leveling messages will be sent in ${channel} from now on.`)
+   } else{
+     return message.channel.send("This command Is patreon only.")
+   }
  }
 })
 
