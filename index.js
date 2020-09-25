@@ -5,6 +5,7 @@ const fs = require("fs");
 const reddit = require('@elchologamer/random-reddit');
 const { Menu } = require('discord.js-menu');
 const canvacord = require("canvacord");
+const db = require('quick.db');
 const nodeCMD = require("node-cmd");
 const leveling = require('discord-leveling')
 let alexa = require('alexa-bot-api');
