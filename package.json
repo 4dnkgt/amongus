@@ -33,6 +33,7 @@
     "quick.db": "^7.1.2",
     "quick.eco": "^5.0.0-dev1",
     "quickcord": "^6.3.1",
+    "reddit-package": "^1.0.0",
     "sequelize": "^6.3.5",
     "snekfetch": "^4.0.4",
     "sqlite3": "^5.0.0"
