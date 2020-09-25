@@ -13,7 +13,7 @@ let ai = new alexa("aw2plm")//access key free :)
 const { Client, MessageEmbed, MessageAttachment } = require('discord.js');
 const client = new Discord.Client()
 
-
+const { default_prefix } = require('./config.json')
 
 const usedCommandRecently = new Set();
 const cooldown = new Set();
