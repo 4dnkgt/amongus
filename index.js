@@ -65,7 +65,7 @@ client.on('message', async message => {
     var profile = await leveling.Fetch(message.author.id)
     leveling.AddXp(message.author.id, 10)
     //If user xp higher than 100 add level
-    if (profile.xp + 10 > 10) {
+    if (profile.xp + 10 > 1000) {
       await leveling.AddLevel(message.author.id, 1)
       await leveling.SetXp(message.author.id, 0)
       message.reply(`Congraluations you now are level ${profile.level + 1}`)
@@ -76,14 +76,14 @@ client.on('message', async message => {
   var profile = await leveling.Fetch(message.author.id)
   leveling.AddXp(message.author.id, 10)
   //If user xp higher than 100 add level
-  if (profile.xp + 10 > 10) {
+  if (profile.xp + 10 > 1000) {
     await leveling.AddLevel(message.author.id, 1)
     await leveling.SetXp(message.author.id, 0)
     client.channels.cache.get(disabled).send(`${user} Congraluations you now are level ${profile.level + 1}`)
   }
   if (command === 'wiki') {
     let text = args.join(" ");
-    message.channel.send('hello')
+    message.channel.send('https://among-us.fandom.com/wiki/Among_Us_Wiki/' + text)
   }
 
 if (command === 'guide') {
